@@ -1,0 +1,116 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 12.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[      3754,        108]
+NotebookOptionsPosition[      3151,         90]
+NotebookOutlinePosition[      3491,        105]
+CellTagsIndexPosition[      3448,        102]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{"Needs", "[", "\"\<ToPython`\>\"", "]"}]], "Input",
+ CellChangeTimes->{{3.78183137533251*^9, 3.781831429050027*^9}, 
+   3.781833606506597*^9, {3.781833742395217*^9, 3.781833780341634*^9}, 
+   3.781833914884242*^9, 
+   3.781834243875712*^9},ExpressionUUID->"b9e31f90-8040-4836-96c5-\
+34129206e60b"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{"k", " ", "=", " ", 
+  RowBox[{
+   RowBox[{"2", "/", "Pi"}], "*", 
+   RowBox[{"ArcSin", "[", " ", 
+    RowBox[{
+     RowBox[{"(", 
+      RowBox[{"sigma", " ", "+", " ", 
+       RowBox[{"theta", " ", "x", " ", "y"}]}], ")"}], "/", " ", 
+     RowBox[{"(", " ", 
+      RowBox[{"sqrt", 
+       RowBox[{"(", 
+        RowBox[{
+         RowBox[{"(", 
+          RowBox[{"1", "+", 
+           RowBox[{"sigma", " ", 
+            RowBox[{"x", "^", "2"}]}]}], ")"}], 
+         RowBox[{"(", 
+          RowBox[{"1", "+", 
+           RowBox[{"theta", " ", 
+            RowBox[{"y", "^", "2"}]}]}], ")"}]}], ")"}]}], " ", ")"}]}], 
+    "]"}]}]}], "\[IndentingNewLine]", 
+ RowBox[{"ToPython", "[", 
+  RowBox[{"k", ",", "\"\<np\>\""}], "]"}], "\[IndentingNewLine]"}], "Input",
+ CellChangeTimes->{{3.78183137533251*^9, 3.781831429050027*^9}, 
+   3.781833606506597*^9, {3.781833742395217*^9, 3.781833780341634*^9}, 
+   3.781833914884242*^9, {3.781834243875712*^9, 3.781834248217327*^9}, {
+   3.7818347443065968`*^9, 3.781834787272156*^9}, {3.7818354997546673`*^9, 
+   3.781835501943376*^9}, {3.781835536863668*^9, 3.781835581236513*^9}, {
+   3.781838037828477*^9, 
+   3.781838042618497*^9}},ExpressionUUID->"a8b97c10-9286-41be-8b4a-\
+39dd09855767"],
+
+Cell[BoxData[
+ FractionBox[
+  RowBox[{"2", " ", 
+   RowBox[{"ArcSin", "[", 
+    FractionBox[
+     RowBox[{"sigma", "+", 
+      RowBox[{"theta", " ", "x", " ", "y"}]}], 
+     RowBox[{"sqrt", " ", 
+      RowBox[{"(", 
+       RowBox[{"1", "+", 
+        RowBox[{"sigma", " ", 
+         SuperscriptBox["x", "2"]}]}], ")"}], " ", 
+      RowBox[{"(", 
+       RowBox[{"1", "+", 
+        RowBox[{"theta", " ", 
+         SuperscriptBox["y", "2"]}]}], ")"}]}]], "]"}]}], "\[Pi]"]], "Output",\
+
+ CellChangeTimes->{3.781834793226472*^9, 3.781835586350895*^9},
+ CellLabel->"Out[11]=",ExpressionUUID->"b2bcf9fe-2b03-4b43-afc8-be5a348af5b9"],
+
+Cell[BoxData["\<\"2 * ( np.pi )**( -1 ) * np.arcsin( ( sqrt )**( -1 ) * ( ( 1 \
++ sigma * ( x )**( 2 ) ) )**( -1 ) * ( sigma + theta * x * y ) * ( ( 1 + \
+theta * ( y )**( 2 ) ) )**( -1 ) )\"\>"], "Output",
+ CellChangeTimes->{3.781834793226472*^9, 3.781835586401738*^9},
+ CellLabel->"Out[12]=",ExpressionUUID->"f17aaf89-7332-4af0-a9bc-2247324840b4"]
+}, Open  ]]
+},
+WindowSize->{808, 905},
+WindowMargins->{{Automatic, 870}, {Automatic, -335}},
+FrontEndVersion->"12.0 for Mac OS X x86 (64-bit) (April 8, 2019)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 320, 6, 30, "Input",ExpressionUUID->"b9e31f90-8040-4836-96c5-34129206e60b"],
+Cell[CellGroupData[{
+Cell[903, 30, 1252, 31, 73, "Input",ExpressionUUID->"a8b97c10-9286-41be-8b4a-39dd09855767"],
+Cell[2158, 63, 625, 18, 67, "Output",ExpressionUUID->"b2bcf9fe-2b03-4b43-afc8-be5a348af5b9"],
+Cell[2786, 83, 349, 4, 90, "Output",ExpressionUUID->"f17aaf89-7332-4af0-a9bc-2247324840b4"]
+}, Open  ]]
+}
+]
+*)
+
