@@ -10,7 +10,7 @@ Xtest = np.linspace(-5, 5, n).reshape(-1,1)
 
 # Define the kernel function
 def kernel(a, b, param):
-    sqdist = np.sum(a**2,1).reshape(-1,1) + np.ssum(b**2,1) - 2*np.dot(a, b.T)
+    sqdist = np.sum(a**2,1).reshape(-1,1) + np.sum(b**2,1) - 2*np.dot(a, b.T)
     return np.exp(-.5 * (1/param) * sqdist)
 
 param = 0.1
