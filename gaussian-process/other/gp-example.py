@@ -38,22 +38,22 @@ ytrain = np.sin(Xtrain)
 K = kernel(Xtrain, Xtrain, param)
 L = np.linalg.cholesky(K + 0.00005*np.eye(len(Xtrain)))
 
-# Compute the mean at our test points.
-K_s = kernel(Xtrain, Xtest, param)
-Lk = np.linalg.solve(L, K_s)
-mu = np.dot(Lk.T, np.linalg.solve(L, ytrain)).reshape((n,))
+# # Compute the mean at our test points.
+# K_s = kernel(Xtrain, Xtest, param)
+# Lk = np.linalg.solve(L, K_s)
+# mu = np.dot(Lk.T, np.linalg.solve(L, ytrain)).reshape((n,))
 
-# Compute the standard deviation so we can plot it
-s2 = np.diag(K_ss) - np.sum(Lk**2, axis=0)
-stdv = np.sqrt(s2)
-# Draw samples from the posterior at our test points.
-L = np.linalg.cholesky(K_ss + 1e-6*np.eye(n) - np.dot(Lk.T, Lk))
-f_post = mu.reshape(-1,1) + np.dot(L, np.random.normal(size=(n,3)))
+# # Compute the standard deviation so we can plot it
+# s2 = np.diag(K_ss) - np.sum(Lk**2, axis=0)
+# stdv = np.sqrt(s2)
+# # Draw samples from the posterior at our test points.
+# L = np.linalg.cholesky(K_ss + 1e-6*np.eye(n) - np.dot(Lk.T, Lk))
+# f_post = mu.reshape(-1,1) + np.dot(L, np.random.normal(size=(n,3)))
 
-pl.plot(Xtrain, ytrain, 'bs', ms=8)
-pl.plot(Xtest, f_post)
-pl.gca().fill_between(Xtest.flat, mu-2*stdv, mu+2*stdv, color="#dddddd")
-pl.plot(Xtest, mu, 'r--', lw=2)
-pl.axis([-5, 5, -3, 3])
-pl.title('Three samples from the GP posterior')
-pl.show()
+# pl.plot(Xtrain, ytrain, 'bs', ms=8)
+# pl.plot(Xtest, f_post)
+# pl.gca().fill_between(Xtest.flat, mu-2*stdv, mu+2*stdv, color="#dddddd")
+# pl.plot(Xtest, mu, 'r--', lw=2)
+# pl.axis([-5, 5, -3, 3])
+# pl.title('Three samples from the GP posterior')
+# pl.show()
