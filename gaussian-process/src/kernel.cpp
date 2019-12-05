@@ -2,7 +2,7 @@
 #include "../include/Matrix.h"
 #include<cmath>
 
-template<class T> void GenericKernel<T>::ConstructKernel(const T* params, const Vector<T>& x, const Vector<T>& y, Matrix<T>& K){
+template<class T> void GenericKernel<T>::ComputeGramMatrix(const T* params, const Vector<T>& x, const Vector<T>& y, Matrix<T>& K){
 
     for (int i=0; i<K.GetNumberOfRows(); i++){
         for(int j=0; j<K.GetNumberOfCols(); j++){

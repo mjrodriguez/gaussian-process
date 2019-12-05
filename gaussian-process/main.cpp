@@ -21,8 +21,8 @@ int main(void){
     Vector<T> v(rows,T(1));
     Matrix<T> A(rows,cols,T(1));
     Matrix<T> C(v);
-    Matrix<T> B = C.Scale(alpha);
-    Matrix<T> D = C.Multiply(B);
+    // Matrix<T> B = C.Scale(alpha);
+    // Matrix<T> D = C.Multiply(B);
     Vector<T> matvec = C.Multiply(v);
 
     SquaredExponential<T> K;
@@ -41,7 +41,7 @@ int main(void){
     A.Print("A = ");
     B.Print("B = ");
     C.Print("C = ");
-    D.Print("D = ");
+    // D.Print("D = ");
     Ar = A.RawPointer();
     matvec.Print("Av =");
 
