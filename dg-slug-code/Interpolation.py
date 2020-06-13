@@ -12,19 +12,19 @@ class Interpolation:
         self.__G, self.__D = gl.lagint(self.__xnodes[0],self.__xquads[0]) 
 
     # Returns location of nodes and quads
-    def Nodes(self):
+    def xnodes(self):
         return self.__xnodes[0]
-    def Quads(self):
+    def xquads(self):
         return self.__xquads[0]
 
     # Return number of nodes and quads
-    def Nn(self):
+    def nnodes(self):
         return self.__nNodes
-    def Nq(self):
+    def nquads(self):
         return self.__nQuads
 
     # Returns the interpolation matrices
-    def G(self):
+    def B(self):
         return self.__G
     def D(self):
         return self.__D
