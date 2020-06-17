@@ -1,7 +1,7 @@
 import numpy as np
 
 class Parameters:
-    def __init__(self, neqs=1, order=2, quads=3*2+1, numOfEls=30, domain=np.array([0,1]), courantNumber=0.8, maxTime=0.25, timeIntegration="rk4" ,boundaryCondition="periodic", riemannSolver="godunov", limitBool=False, leftBC=0, rightBC=0, shockLoc=0, plotSol=True):
+    def __init__(self, neqs=1, order=2, quads=3*2+1, numOfEls=30, domain=np.array([0,1]), courantNumber=0.8, maxTime=0.25, timeIntegration="rk4" ,boundaryCondition="periodic", riemannSolver="godunov", limitBool=False, limiter="pi1",leftBC=0, rightBC=0, shockLoc=0, plotSol=True):
         self.__order = order
         self.__neqs  = neqs
         self.__p     = order+1
@@ -13,6 +13,7 @@ class Parameters:
         self.__timeIntegration = timeIntegration
         self.__boundaryCondition = boundaryCondition
         self.__limit  = limitBool
+        self.__limiter = limiter
         self.__riemannSolver = riemannSolver
         self.__shockLoc = shockLoc
         self.__leftBC = leftBC
@@ -47,6 +48,8 @@ class Parameters:
         return self.__boundaryCondition
     def LimitSolution(self):
         return self.__limit
+    def Limiter(self):
+        return self.__limiter
     def RiemannSolver(self):
         return self.__riemannSolver
     def PlotSol(self):

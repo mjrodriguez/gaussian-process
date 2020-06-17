@@ -2,16 +2,16 @@ import numpy as np
 import Interpolation as interpolation
 
 class linedg:
-    def __init__(self, mesh, P):
-        self.P = P
+    def __init__(self, mesh, params):
+        self.params = params
         self.__dim   = 1
-        self.__neqs  = P.neqs()
-        self.__order = P.order()
+        self.__neqs  = params.neqs()
+        self.__order = params.order()
         self.__nnodes = self.__order+1
-        self.__nels  = P.nels()
-        self.__nquads = P.nquads()
+        self.__nels  = params.nels()
+        self.__nquads = params.nquads()
         self.ip = interpolation.Interpolation(self.__nnodes, self.__nquads)
-        self.m  = mesh
+        self.mesh  = mesh
         self.mass = np.matmul(np.transpose(self.ip.B()), np.matmul(self.ip.W(), self.ip.B()) )
         self.invMass = np.linalg.inv(self.mass)
         self.__q = np.zeros([self.__nels,self.__nnodes])
@@ -25,16 +25,16 @@ class linedg:
         # Compute flux
         F = np.multiply(u,u)
         # F = u
-        return F*self.m.J()*self.m.invJ()
+        return F*self.mesh.J()*self.mesh.invJ()
 
     def SetBC(self):
-        if (self.P.BoundaryConditions() == "periodic"):
+        if (self.params.BoundaryConditions() == "periodic"):
             self.__leftBC = self.u[self.__nels-1, self.__nnodes-1]
             self.__rightBC = self.u[0,0]
-        elif (self.P.BoundaryConditions() == "outflow"):
-            self.__leftBC = self.P.LeftBC()
-            self.__rightBC = self.P.RightBC()
-        # elif (self.P.BoundaryConditions() == "outflow"):
+        elif (self.params.BoundaryConditions() == "outflow"):
+            self.__leftBC = self.params.LeftBC()
+            self.__rightBC = self.params.RightBC()
+        # elif (self.params.BoundaryConditions() == "outflow"):
 
 
     def AssembleElement(self,u):
@@ -62,7 +62,7 @@ class linedg:
             q[0] -= fstar[0]
             q[-1] += fstar[1]
             self.__q[iel,:] = np.matmul(self.invMass, q)
-        return -self.__q/self.m.detJ()
+        return -self.__q/self.mesh.detJ()
 
     ######################################################
     #
@@ -71,7 +71,7 @@ class linedg:
     #######################################################
 
     def RiemannSolver(self, uleft, uright):
-        rs = self.P.RiemannSolver()
+        rs = self.params.RiemannSolver()
         if (rs == "upwind"):
             c = np.max(self.u)
             fhat = self.Upwind(c,uleft,uright)

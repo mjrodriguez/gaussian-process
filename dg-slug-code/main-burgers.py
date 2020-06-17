@@ -18,7 +18,7 @@ def PlotSolution(t, x, u, fig):
     xplot = x.ravel()
     uplot = u.ravel()
     fig.clf()
-    plt.plot(xplot,uplot,'b*')
+    plt.plot(xplot,uplot,'b-')
     plt.xlabel("x")
     plt.ylabel("u")
     plt.title("Time = %1.3f" %t)
@@ -32,7 +32,7 @@ if __name__ == "__main__":
 
 
     
-    probs = pr.problem(1)
+    probs = pr.problem(3)
     params, mesh, u = probs.SetProblem()
 
     print("=================================================================")
@@ -41,6 +41,7 @@ if __name__ == "__main__":
     print("*             Order = ", params.order() )
     print("*         Number of Elements = ", params.nels())
     print("*            CFL Constant = ", params.CourantNumber())
+    print("*              Problem  = ", probs.GetProblem())
     print("=================================================================")
 
     # params.UpdatePlotSol(False)
@@ -49,25 +50,24 @@ if __name__ == "__main__":
 
 
     ldg = linedg.linedg(mesh, params)
-    ti = tint.time_integration(params,ldg)
-    lim = Limit.Limit(params,ldg)
-    ubar = lim.LimitSolution(u)
+    ti = tint.time_integration(ldg)
+    # lim = Limit.Limit(ldg)
+    # ubar = lim.LimitSolution(u)
 
     t = 0.0
     nsteps = 0
-    # fig = plt.figure()
-    # while t < params.MaxTime():
-    #     dt = ti.ComputeDt(u)
-    #     # print(dt)
-    #     if (dt > params.MaxTime()-t):
-    #         dt = params.MaxTime()-t
-    #     print("time = %1.3f" %t, "dt = %1.3e"%dt)
-    #     t += dt
-    #     u = ti.Evolve(dt,t,u)
-    #     nsteps += 1
-    #     if (nsteps % 10 == 0 and params.PlotSol()==True): 
-    #         PlotSolution(t, mesh.X(), u, fig)
+    fig = plt.figure()
+    while t < params.MaxTime():
+        dt = ti.ComputeDt(u)
+        if (dt > params.MaxTime()-t):
+            dt = params.MaxTime()-t
+        t += dt
+        u = ti.Evolve(dt,t,u)
+        nsteps += 1
+        if (nsteps % 100 == 0 and params.PlotSol()==True): 
+            print("time = %1.4f" %t, "dt = %1.3e"%dt)
+            PlotSolution(t, mesh.X(), u, fig)
 
-    # if (params.PlotSol() == True):  
-    #     PlotSolution(t, mesh.X(), u, fig)
-    #     plt.show()
+    if (params.PlotSol() == True):  
+        PlotSolution(t, mesh.X(), u, fig)
+        plt.show()
