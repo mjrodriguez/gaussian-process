@@ -2,7 +2,7 @@ import numpy as np
 import Interpolation as interpolation
 
 class linedg:
-    def __init__(self, mesh, P, u):
+    def __init__(self, mesh, P):
         self.P = P
         self.__dim   = 1
         self.__neqs  = P.neqs()
@@ -14,31 +14,31 @@ class linedg:
         self.m  = mesh
         self.mass = np.matmul(np.transpose(self.ip.B()), np.matmul(self.ip.W(), self.ip.B()) )
         self.invMass = np.linalg.inv(self.mass)
-        self.u = u
-
         self.__q = np.zeros([self.__nels,self.__nnodes])
+    def order(self):
+        return self.__order
 
-
-    # def InitialCondition(self):
-    #     u = np.ones([self.__nels, self.__nnodes])
-    #     return u
     def q(self):
         return self.__q
 
     def Flux(self,u):
         # Compute flux
-        F = 0.5*np.multiply(u,u)
+        F = np.multiply(u,u)
+        # F = u
         return F*self.m.J()*self.m.invJ()
 
     def SetBC(self):
         if (self.P.BoundaryConditions() == "periodic"):
             self.__leftBC = self.u[self.__nels-1, self.__nnodes-1]
             self.__rightBC = self.u[0,0]
-        elif (self.P.BoundaryConditions() == "nonperiodic"):
-            self.__leftBC = P.LeftBC()
-            self.__rightBC = P.RightBC()
+        elif (self.P.BoundaryConditions() == "outflow"):
+            self.__leftBC = self.P.LeftBC()
+            self.__rightBC = self.P.RightBC()
+        # elif (self.P.BoundaryConditions() == "outflow"):
 
-    def AssembleElement(self):
+
+    def AssembleElement(self,u):
+        self.u = u
         self.SetBC()
         q = np.zeros([self.__nnodes,1])
         fstar = np.zeros([2,1])
@@ -62,7 +62,8 @@ class linedg:
             q[0] -= fstar[0]
             q[-1] += fstar[1]
             self.__q[iel,:] = np.matmul(self.invMass, q)
-    
+        return -self.__q/self.m.detJ()
+
     ######################################################
     #
     # Riemann Solver Functions
@@ -74,6 +75,12 @@ class linedg:
         if (rs == "upwind"):
             c = np.max(self.u)
             fhat = self.Upwind(c,uleft,uright)
+        elif (rs == "godunov"):
+            fhat = self.Godunov(uleft,uright)
+        elif (rs == "lf"):
+            fhat = self.LF(uleft,uright)
+        elif (rs == "llf"):
+            fhat = self.LLF(uleft,uright)
         return fhat
 
     def Upwind(self, c, uleft, uright):
@@ -83,12 +90,47 @@ class linedg:
             ustar = uright
         fstar = self.Flux(ustar)
         return fstar
-        
-
-
-        
-
     
+    def Godunov(self, uleft, uright):
+        s = 0.5*(uleft + uright)
+        if (uleft >= uright):
+            if (s >= 0):
+                ustar = uleft
+            else:
+                ustar = uright
+        elif (uleft < uright):
+            if (uleft >= 0):
+                ustar = uleft
+            elif (uright <= 0):
+                ustar = uright
+            elif (uleft < 0 and uright > 0):
+                ustar = 0
+        Fstar = self.Flux(ustar)
+        return Fstar
+    
+    def LF(self, uleft, uright):
+        Cmax = np.amax(self.u)
+        FL = self.Flux(uleft)
+        FR = self.Flux(uright)
+        avgState = 0.5*(FL + FR)
+        jump     = uright - uleft
+        Fstar    = avgState - 0.5*Cmax*jump
+        return Fstar
+
+    def LLF(self, uleft, uright):
+        Cmax = np.amax([uleft,uright])
+        FL = self.Flux(uleft)
+        FR = self.Flux(uright)
+        avgState = 0.5*(FL + FR)
+        jump     = uright - uleft
+        Fstar    = avgState - 0.5*Cmax*jump
+        return Fstar 
+
+
+        
+
+
+
 
     
 

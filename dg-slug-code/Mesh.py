@@ -30,7 +30,7 @@ class Mesh:
     def X(self):
         self.__X = np.zeros([self.__K, self.__nN])
         for i in range(self.__K):
-            self.__X[i,:] = i*self.__dx + self.__ip.xnodes()*self.__dx
+            self.__X[i,:] = (i*self.__dx + self.__xmin)+ self.__ip.xnodes()*self.__dx
         return self.__X
 
     def J(self):
