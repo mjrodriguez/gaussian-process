@@ -13,24 +13,25 @@ if __name__ == "__main__":
     order = 4
     n = order+1
     xnodes = gl.lglnodes(order)
-    xquad  = gl.lglnodes(2*order)
+    xquad  = gl.lglnodes(4*order)
     B,D = gl.lagint(xnodes[0],xquad[0])
 
+
     Xtrain = xnodes[0].reshape(-1,1)
-    # Xtest = np.linspace(0, 1, order+1).reshape(-1,1)
-    Xtest = Xtrain
-    
+    Xtest = np.linspace(0, 1, order+1).reshape(-1,1)
+
     print("---- xtrain ----")
     print(Xtrain)
     print("---- xtest ----")
     print(Xtest)
     
     # Lagrange polynomial
-    ytrain = np.sum(B,axis=0)
+    ytrain = np.sin(2*np.pi*Xtrain)
+    f_lagrange = np.matmul(B,ytrain)
     print("---- ytrain ----")
     print(ytrain)
 
-    # Gaussian Process
+    ######### Gaussian Process ########
     param = 0.1
     K_ss = kernel(Xtest, Xtest, param) 
 
@@ -56,7 +57,7 @@ if __name__ == "__main__":
     plt.plot(Xtest, f_post)
     plt.gca().fill_between(Xtest.flat, mu-2*stdv, mu+2*stdv, color="#dddddd")
     plt.plot(Xtest, mu, 'r--', lw=2)
-    plt.axis([0,1, 0, 3])
+    plt.plot(xquad[0],f_lagrange)
     plt.title('Three samples from the GP posterior')
     plt.show()
 
